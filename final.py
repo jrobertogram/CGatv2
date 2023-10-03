@@ -14,6 +14,7 @@ global angulo
 global liga_ventilador
 global bol1
 global bol2
+global maoY
 global luz_acesa
 luz_acesa = False
 b_colision = False
@@ -23,6 +24,7 @@ aux1 = 0
 aux2 = 0
 bol1 = 0
 bol2 = 0
+maoY = 0
 bolscale=1
 angulo = 30
 liga_ventilador = 0
@@ -76,57 +78,66 @@ def pisotextura():
 
     glDisable(GL_TEXTURE_2D)   
     glPopMatrix()
+
 def mao():
 
     #Base dda mão
-    glColor3f(1.0, 1.0, 0.0)  # Cor branco
+    glColor3f(1, 0.89, 0.71)  # Cor Mocassim     
     glPushMatrix()
-    glTranslate(0, 3, -0.4)
+    glTranslate(0, 2.6, -0.4)
+    glTranslate(0, maoY, 0)
     glScale(1.5,0.5,2.5)
     glutSolidCube(0.5)
     glPopMatrix()
 
     #Dedo 1
-    glColor3f(1.0, 0.0, 0.0)  # Cor branco
+    glColor3f(1, 0.89, 0.71)  # Cor Mocassim     
     glPushMatrix()
-    glTranslate(-0.55, 3, -0.0)
+    glTranslate(-0.55, 2.6, -0.0)
+    glTranslate(0, maoY, 0)
     glScale(3.5,1,1)
     glutSolidCube(0.2)
     glPopMatrix()
 
     #Dedo 2
-    glColor3f(1.0, 0.5, 0.0)  # Cor branco
+    glColor3f(1, 0.89, 0.71)  # Cor Mocassim     
     glPushMatrix()
-    glTranslate(-0.55, 3, -0.3)
+    glTranslate(-0.55, 2.6, -0.3)
+    glTranslate(0, maoY, 0)
     glScale(4.5,1,1)
     glutSolidCube(0.2)
     glPopMatrix()
 
     
     #Dedo 3
-    glColor3f(0.5, 0.0, 0.0)  # Cor branco
+    glColor3f(1, 0.89, 0.71)  # Cor Mocassim     
     glPushMatrix()
-    glTranslate(-0.55, 3, -0.6)
+    glTranslate(-0.55, 2.6, -0.6)
+    glTranslate(0, maoY, 0)
     glScale(4,1,1)
     glutSolidCube(0.2)
     glPopMatrix()
 
     #Dedo 4
-    glColor3f(0.5, 0.0, 0.0)  # Cor branco
+    glColor3f(1, 0.89, 0.71)  # Cor Mocassim     
     glPushMatrix()
-    glTranslate(-0.55, 3, -0.9)
-    glScale(1.5,1,1)
+    glTranslate(-0.55, 2.6, -0.9)
+    glTranslate(0, maoY, 0)
+    glScale(2.5,1,1)
     glutSolidCube(0.2)
     glPopMatrix()
 
     #Dedo 5
-    glColor3f(1.0, 0.0, 0.0)  # Cor branco
+    glColor3f(1, 0.89, 0.71)  # Cor Mocassim     
     glPushMatrix()
-    glTranslate(-0.55, 3, -0.0)
-    glScale(3.5,1,1)
-    glRotate(90,0,1,0)
+    glRotate(45,0,1,0)
+    glTranslate(-0.40, 2.6, -0.0)
+    glTranslate(0, maoY, 0)
+    glScale(2.5,1,1.0)
     glutSolidCube(0.2)
+    
     glPopMatrix()
+
 
 
 def desenho():
@@ -288,18 +299,19 @@ def update(value):
     global bol2
     global b_colision
     global bolscale
-
-    if b_colision == False and bol1 > 0:
-        
-        
+    global maoY
+    
+   if b_colision == False and bol1 > 0:
+       
+        if bol1 >= 2.4:
+            maoY -=0.05
         if bol1 <=2.0:
             bol1 -=0.05
+            maoY = 0
         else:
             bol1 -=0.04 
 
          #   Colocar a escala, para achatar a bola
-       
-        
         if bol1 <=0.55:
             bolscale = 1.0
         if bol1 <=0.5:
@@ -314,14 +326,8 @@ def update(value):
         if bol1 <= 0:
             b_colision = True
             
-   
-        
 
     else:
-        
-       
-
-        
         if bol1 < 1.0:       
             bol1 += 0.09
         if bol1 <=2.0:  
@@ -347,10 +353,10 @@ def update(value):
             bolscale = 2.0
 
         if bol1 >= 2.5:
+            maoY +=0.05 # Vai fazer a mão subir
             b_colision = False
 
         
-
     glutPostRedisplay()
     glutTimerFunc(16, update, 0)
 
