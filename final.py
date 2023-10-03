@@ -148,7 +148,7 @@ def desenho():
     glEnable(GL_TEXTURE_2D)
     glBindTexture(GL_TEXTURE_2D, tex)
     
-    gluSphere(qobj, 0.2, 20, 20) # Use gluSphere instead of glutSolidSphere
+    gluSphere(qobj, 0.2, 20, 20)
     gluDeleteQuadric(qobj)
     
     glDisable(GL_TEXTURE_2D)
