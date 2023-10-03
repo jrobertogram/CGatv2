@@ -17,6 +17,8 @@ global bol2
 global maoY
 global luz_acesa
 luz_acesa = False
+global luz_acesa_ambiente
+luz_acesa_ambiente = False
 b_colision = False
 esqdir = 0
 cimabaixo = 0
@@ -186,63 +188,31 @@ def load_texture(filename):
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img.size[0], img.size[1], 0, GL_RGB, GL_UNSIGNED_BYTE, img_data)
     return textID
 
-
-def luz_fixa():
-    luzAmbiente = [0.2, 0.2, 0.2, 1.0]
-    luzDifusa = [0.7, 0.7, 0.7, 1.0]
-    luzEspecular = [1.0, 1.0, 1.0, 1.0]
-    posicaoLuz = [0.0, 50.0, 50.0, 1.0]
-    especularidade = [1.0, 1.0, 1.0, 1.0]
-    especMaterial = 60
-
-    glShadeModel(GL_SMOOTH)
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, especularidade)
-    glMateriali(GL_FRONT, GL_SHININESS, especMaterial)
-
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente)
+def luz_ambiente():
+    luzAmbiente =  [1, 1, 1, 1.0]
     glLightfv(GL_LIGHT1, GL_AMBIENT, luzAmbiente)
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, luzDifusa)
-    glLightfv(GL_LIGHT1, GL_SPECULAR, luzEspecular)
-    glLightfv(GL_LIGHT1, GL_POSITION, posicaoLuz)
+
 
 def luz_acionavel():
-    
-    global aux1
-    global luz_acesa
-
-    luzAmbiente = [0.2, 0.2, 0.2, 1.0]
-    luzDifusa = [1.0, 1.0, 0.0, 1.0] 
-    luzEspecular = [1.0, 1.0, 1.0, 1.0]
-    posicaoLuz = [aux1, 50.0, 50.0, 1.0]
-    especularidade = [1.0, 1.0, 1.0, 1.0]
-    especMaterial = 60
-
-    glShadeModel(GL_SMOOTH)
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, especularidade)
-    glMateriali(GL_FRONT, GL_SHININESS, especMaterial)
-
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente)
+    luzAmbiente =  [1.0, 0.86, 0.35, 0.1]
     glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente)
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa)
-    glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular)
 
-    if luz_acesa:
-        glEnable(GL_LIGHT0)
-    else:
-        glDisable(GL_LIGHT0)
-
-    glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz)
-    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 30.0)  # Ângulo de corte
-    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, [0.0, -1.0, 0.0])  # Direção do holofote
-    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 2.0) 
 
 def iluminacao_da_cena():
-    luz_fixa()
-    luz_acionavel()
+    global luz_acesa_ambiente
+
+    luz_ambiente()
+
+    if luz_acesa_ambiente:
+        glEnable(GL_LIGHTING)
+        glDisable(GL_LIGHT0) 
+        glEnable(GL_LIGHT0)
+    else:
+        glEnable(GL_LIGHTING)
+        glDisable(GL_LIGHT0) 
+        #glEnable(GL_LIGHT1)
+
     glEnable(GL_COLOR_MATERIAL)
-    glEnable(GL_LIGHTING)
-    glEnable(GL_LIGHT1)
-    glEnable(GL_DEPTH_TEST)
 
 
 def troca_camera():
@@ -364,6 +334,7 @@ def Teclado(tecla, x, y):
     global liga_ventilador
     global camera_mode
     global luz_acesa
+    global luz_acesa_ambiente
 
     print("*** Tratamento de teclas comuns")
     print(">>> Tecla: ", tecla)
@@ -388,8 +359,8 @@ def Teclado(tecla, x, y):
         print("aux2 = ", aux2)
 
     if tecla == b'z':
-        luz_acesa = not luz_acesa
-        print("Pressionou o interruptor do ventilador")
+        luz_acesa_ambiente = not luz_acesa_ambiente
+        print("Ligou o sol")
 
     if tecla == b'1':
         camera_mode = 0
