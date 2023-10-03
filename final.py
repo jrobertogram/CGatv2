@@ -301,7 +301,7 @@ def update(value):
     global bolscale
     global maoY
     
-   if b_colision == False and bol1 > 0:
+    if b_colision == False and bol1 > 0:
        
         if bol1 >= 2.4:
             maoY -=0.05
@@ -323,10 +323,9 @@ def update(value):
         if bol1 <=0.2:
             bolscale = 2.0
 
-        if bol1 <= 0:
+        if bol1 <= 0.3:
             b_colision = True
             
-
     else:
         if bol1 < 1.0:       
             bol1 += 0.09
@@ -334,8 +333,6 @@ def update(value):
             bol1 +=0.05
         else:
             bol1 +=0.04
-
-    
         if bol1 <=0.55:
             bol1 += 0.09
             bolscale = 1.0
@@ -352,7 +349,7 @@ def update(value):
             bol1 += 0.01
             bolscale = 2.0
 
-        if bol1 >= 2.5:
+        if bol1 >= 2.3:
             maoY +=0.05 # Vai fazer a mão subir
             b_colision = False
 
